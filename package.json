@@ -1,0 +1,33 @@
+{
+  "name": "ds-ui-root",
+  "version": "1.0.0",
+  "description": "DigitalSafety UI — Zero dependency component library",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=apps/docs",
+    "build": "npm run build --workspace=apps/docs",
+    "preview": "npm run preview --workspace=apps/docs"
+  },
+  "keywords": [
+    "ui",
+    "components",
+    "tailwind",
+    "react",
+    "ds-ui",
+    "digitalsafety"
+  ],
+  "author": "DigitalSafety",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jitendrayadav45/DS-UI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Jitendrayadav45/DS-UI/issues"
+  },
+  "homepage": "https://ds-ui.vercel.app"
+}

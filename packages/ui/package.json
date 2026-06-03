@@ -1,0 +1,8 @@
+{
+  "name": "ds-ui",
+  "version": "0.1.0",
+  "description": "DigitalSafety UI Components — Zero dependency",
+  "main": "src/index.js",
+  "private": false,
+  "license": "MIT"
+}
