@@ -27,12 +27,10 @@ export default function Sidebar({ currentPage, onNavigate, isOpen }) {
       {/* Logo */}
       <div className="px-6 py-5 border-b border-white/5">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-            <span className="text-white font-black text-sm">DS</span>
-          </div>
+          <img src="/logo.png" alt="DS-UI Logo" className="h-10 object-contain" />
           <div>
             <h1 className="text-white font-bold text-base leading-none">DS-UI</h1>
-            <p className="text-white/30 text-xs mt-0.5">DigitalSafety</p>
+            <p className="text-[#b275e4] text-xs mt-0.5 font-medium">DigitalSafety</p>
           </div>
         </div>
       </div>
@@ -77,7 +75,7 @@ export default function Sidebar({ currentPage, onNavigate, isOpen }) {
 
       {/* Footer */}
       <div className="px-6 py-4 border-t border-white/5">
-        <p className="text-[11px] text-white/20 text-center">Built by DigitalSafety</p>
+        <p className="text-[11px] text-[#b275e4] text-center">Built by DigitalSafety</p>
       </div>
     </aside>
   )
