@@ -1,11 +1,43 @@
 import { Badge } from '@ui/components/Badge'
 import ComponentPreview from '../components/docs/ComponentPreview'
 import PropsTable from '../components/docs/PropsTable'
+import Playground from '../components/docs/Playground'
+
+// Playground config
+const badgeControls = [
+  {
+    name: 'variant',
+    type: 'select',
+    default: 'primary',
+    options: ['default', 'primary', 'success', 'warning', 'danger'],
+  },
+  {
+    name: 'size',
+    type: 'select',
+    default: 'md',
+    options: ['sm', 'md', 'lg'],
+  },
+  {
+    name: 'label',
+    type: 'text',
+    default: 'Badge',
+  },
+]
+
+const generateBadgeCode = (values) => {
+  const props = []
+  if (values.variant !== 'primary') props.push(`variant="${values.variant}"`)
+  if (values.size !== 'md')         props.push(`size="${values.size}"`)
+
+  const propsStr = props.length > 0 ? ' ' + props.join(' ') : ''
+  return `<Badge${propsStr}>${values.label}</Badge>`
+}
 
 export default function BadgePage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
 
+      {/* Header */}
       <div className="mb-10">
         <div className="flex items-center gap-3 mb-3">
           <span className="text-3xl">🏷️</span>
@@ -16,6 +48,22 @@ export default function BadgePage() {
         </p>
       </div>
 
+      {/* Playground */}
+      <Playground
+        title="Interactive Playground"
+        controls={badgeControls}
+        renderPreview={(values) => (
+          <Badge
+            variant={values.variant}
+            size={values.size}
+          >
+            {values.label}
+          </Badge>
+        )}
+        generateCode={generateBadgeCode}
+      />
+
+      {/* Static Previews */}
       <ComponentPreview
         title="Variants"
         description="5 color variants for different statuses"
