@@ -35,11 +35,13 @@ export default function Playground({ title = 'Playground', controls, renderPrevi
         <div className="w-full lg:w-72 p-5 space-y-5">
           {controls.map((ctrl) => (
             <div key={ctrl.name}>
+
+              {/* Label */}
               <label className="block text-xs font-semibold text-white/40 uppercase tracking-wider mb-2">
                 {ctrl.name}
               </label>
 
-              {/* Radio options */}
+              {/* Select — Radio Buttons */}
               {ctrl.type === 'select' && (
                 <div className="flex flex-wrap gap-2">
                   {ctrl.options.map((opt) => (
@@ -60,31 +62,65 @@ export default function Playground({ title = 'Playground', controls, renderPrevi
                 </div>
               )}
 
-              {/* Toggle */}
+              {/* Boolean — Toggle Switch */}
               {ctrl.type === 'boolean' && (
                 <button
                   onClick={() => updateValue(ctrl.name, !values[ctrl.name])}
                   className={`
-                    relative inline-flex h-6 w-11 items-center rounded-full transition-colors
+                    relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200
                     ${values[ctrl.name] ? 'bg-blue-600' : 'bg-white/10'}
                   `}
                 >
                   <span className={`
-                    inline-block h-4 w-4 rounded-full bg-white transition-transform
+                    inline-block h-4 w-4 rounded-full bg-white transition-transform duration-200
                     ${values[ctrl.name] ? 'translate-x-6' : 'translate-x-1'}
                   `} />
                 </button>
               )}
 
-              {/* Text Input */}
+              {/* Text — Text Input */}
               {ctrl.type === 'text' && (
                 <input
                   type="text"
                   value={values[ctrl.name]}
                   onChange={(e) => updateValue(ctrl.name, e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-blue-500/50"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-blue-500/50 transition-colors"
                 />
               )}
+
+              {/* Number — Number Input */}
+              {ctrl.type === 'number' && (
+                <input
+                  type="number"
+                  value={values[ctrl.name]}
+                  min={ctrl.min || 1}
+                  max={ctrl.max || 20}
+                  onChange={(e) => updateValue(ctrl.name, Number(e.target.value))}
+                  className="w-24 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-blue-500/50 transition-colors"
+                />
+              )}
+
+              {/* Color — Color Picker */}
+              {ctrl.type === 'color' && (
+                <div className="flex flex-wrap gap-2">
+                  {ctrl.options.map((color) => (
+                    <button
+                      key={color}
+                      onClick={() => updateValue(ctrl.name, color)}
+                      title={color}
+                      className={`
+                        w-7 h-7 rounded-full border-2 transition-all duration-150
+                        ${values[ctrl.name] === color
+                          ? 'border-white scale-110'
+                          : 'border-transparent hover:scale-105'
+                        }
+                      `}
+                      style={{ backgroundColor: color }}
+                    />
+                  ))}
+                </div>
+              )}
+
             </div>
           ))}
         </div>
@@ -100,8 +136,6 @@ export default function Playground({ title = 'Playground', controls, renderPrevi
           <code>{code}</code>
         </pre>
       </div>
-
-      
 
     </div>
   )
