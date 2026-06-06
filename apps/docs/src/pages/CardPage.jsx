@@ -1,11 +1,51 @@
 import { Card } from '@ui/components/Card'
 import ComponentPreview from '../components/docs/ComponentPreview'
 import PropsTable from '../components/docs/PropsTable'
+import Playground from '../components/docs/Playground'
+
+// Playground config
+const cardControls = [
+  {
+    name: 'variant',
+    type: 'select',
+    default: 'default',
+    options: ['default', 'outlined', 'elevated', 'flat'],
+  },
+  {
+    name: 'title',
+    type: 'text',
+    default: 'Card Title',
+  },
+  {
+    name: 'description',
+    type: 'text',
+    default: 'This is a card description.',
+  },
+  {
+    name: 'footer',
+    type: 'text',
+    default: 'Footer text',
+  },
+]
+
+const generateCardCode = (values) => {
+  const props = []
+  if (values.variant !== 'default') props.push(`variant="${values.variant}"`)
+  if (values.title)       props.push(`title="${values.title}"`)
+  if (values.description) props.push(`description="${values.description}"`)
+  if (values.footer)      props.push(`footer="${values.footer}"`)
+
+  if (props.length <= 2) {
+    return `<Card ${props.join(' ')} />`
+  }
+  return `<Card\n  ${props.join('\n  ')}\n/>`
+}
 
 export default function CardPage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
 
+      {/* Header */}
       <div className="mb-10">
         <div className="flex items-center gap-3 mb-3">
           <span className="text-3xl">🃏</span>
@@ -16,6 +56,22 @@ export default function CardPage() {
         </p>
       </div>
 
+      {/* Playground */}
+      <Playground
+        title="Interactive Playground"
+        controls={cardControls}
+        renderPreview={(values) => (
+          <Card
+            variant={values.variant}
+            title={values.title}
+            description={values.description}
+            footer={values.footer}
+          />
+        )}
+        generateCode={generateCardCode}
+      />
+
+      {/* Static Previews */}
       <ComponentPreview
         title="Variants"
         description="4 visual styles for different use cases"
@@ -43,6 +99,18 @@ export default function CardPage() {
 <div class="bg-transparent border-2 border-white/20 rounded-2xl p-5">
   <h3 class="text-white font-semibold mb-1">Outlined</h3>
   <p class="text-white/40 text-sm">Transparent with bold border</p>
+</div>
+
+<!-- Elevated -->
+<div class="bg-[#1a1a1a] border border-white/5 shadow-2xl shadow-black/50 rounded-2xl p-5">
+  <h3 class="text-white font-semibold mb-1">Elevated</h3>
+  <p class="text-white/40 text-sm">Deep shadow effect</p>
+</div>
+
+<!-- Flat -->
+<div class="bg-white/5 rounded-2xl p-5">
+  <h3 class="text-white font-semibold mb-1">Flat</h3>
+  <p class="text-white/40 text-sm">Subtle background only</p>
 </div>`}
       />
 
@@ -75,11 +143,11 @@ export default function CardPage() {
 
       <PropsTable props={[
         { name: 'variant',     type: "'default'|'outlined'|'elevated'|'flat'", default: "'default'", description: 'Visual style of the card' },
-        { name: 'title',       type: 'string',          default: '—',  description: 'Card title text' },
-        { name: 'description', type: 'string',          default: '—',  description: 'Card body text' },
+        { name: 'title',       type: 'string',           default: '—', description: 'Card title text' },
+        { name: 'description', type: 'string',           default: '—', description: 'Card body text' },
         { name: 'footer',      type: 'string|ReactNode', default: '—', description: 'Footer content' },
-        { name: 'image',       type: 'string (url)',    default: '—',  description: 'Top image URL' },
-        { name: 'children',    type: 'ReactNode',       default: '—',  description: 'Custom content inside card' },
+        { name: 'image',       type: 'string (url)',     default: '—', description: 'Top image URL' },
+        { name: 'children',    type: 'ReactNode',        default: '—', description: 'Custom content inside card' },
       ]} />
 
     </div>
