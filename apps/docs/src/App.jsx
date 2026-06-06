@@ -5,6 +5,7 @@ import ButtonPage from './pages/ButtonPage'
 import CardPage from './pages/CardPage'
 import BadgePage from './pages/BadgePage'
 import AlertPage from './pages/AlertPage'
+import InputPage from './pages/InputPage'
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home')
@@ -17,6 +18,7 @@ export default function App() {
       case 'card':   return <CardPage />
       case 'badge':  return <BadgePage />
       case 'alert':  return <AlertPage />
+      case 'input': return <InputPage />
       default:       return <HomePage onNavigate={setCurrentPage} />
     }
   }
