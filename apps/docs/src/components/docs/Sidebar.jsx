@@ -13,6 +13,7 @@ const navItems = [
       { id: 'badge',  label: 'Badge',  icon: '🏷️' },
       { id: 'alert',  label: 'Alert',  icon: '🔔' },
       { id: 'input', label: 'Input', icon: '✏️' },
+      { id: 'navbar', label: 'Navbar', icon: '🧭' },
     ]
   }
 ]
