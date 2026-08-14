@@ -22,13 +22,13 @@ export function Navbar({
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2 flex-shrink-0 mr-6">
             <img
               src="https://i.ibb.co/ymRVPhRz/logo.jpg"
               alt="DS Logo"
-              className="w-8 h-8 rounded-full object-cover"
+              className="w-8 h-8 rounded-full object-cover flex-shrink-0"
             />
-            <span className="text-white font-bold text-lg">{logo}</span>
+            <span className="text-white font-bold text-lg whitespace-nowrap">{logo}</span>
           </div>
 
           {/* Desktop Links */}
