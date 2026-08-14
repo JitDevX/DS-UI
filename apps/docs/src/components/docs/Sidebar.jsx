@@ -76,8 +76,15 @@ export default function Sidebar({ currentPage, onNavigate, isOpen }) {
       </nav>
 
       {/* Footer */}
-      <div className="px-6 py-4 border-t border-white/5">
-        <p className="text-[11px] text-[#b275e4] text-center">Built by DigitalSafety</p>
+      <div className="px-6 py-5 border-t border-white/5">
+        <div className="flex items-center justify-center gap-2">
+          <img
+            src="https://i.ibb.co/ymRVPhRz/logo.jpg"
+            alt="DS Logo"
+            className="w-9 h-9 rounded-full object-cover"
+          />
+          <p className="text-[11px] text-[#b275e4]">Built by DigitalSafety</p>
+        </div>
       </div>
     </aside>
   )
