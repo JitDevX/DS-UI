@@ -26,6 +26,12 @@ const navbarControls = [
     options: ['default', 'transparent', 'blur', 'solid'],
   },
   {
+    name: 'size',
+    type: 'select',
+    default: 'md',
+    options: ['sm', 'md', 'lg'],
+  },
+  {
     name: 'sticky',
     type: 'boolean',
     default: false,
@@ -36,6 +42,7 @@ const generateNavbarCode = (values) => {
   const props = []
   if (values.logo !== 'DS-UI')       props.push(`logo="${values.logo}"`)
   if (values.variant !== 'default')  props.push(`variant="${values.variant}"`)
+  if (values.size !== 'md')          props.push(`size="${values.size}"`)
   if (values.sticky)                 props.push('sticky')
 
   const linksCode = `links={[
@@ -74,6 +81,7 @@ export default function NavbarPage() {
             <Navbar
               logo={values.logo}
               variant={values.variant}
+              size={values.size}
               sticky={values.sticky}
               links={sampleLinks}
               actions={
@@ -85,6 +93,42 @@ export default function NavbarPage() {
           </div>
         )}
         generateCode={generateNavbarCode}
+      />
+
+      {/* Sizes */}
+      <ComponentPreview
+        title="Sizes"
+        description="3 sizes — sm, md (default), lg"
+        preview={
+          <div className="w-full flex flex-col gap-4">
+            {['sm', 'md', 'lg'].map((size) => (
+              <div key={size} className="rounded-xl overflow-hidden border border-white/10">
+                <Navbar
+                  size={size}
+                  logo={`DS-UI (${size})`}
+                  links={sampleLinks}
+                />
+              </div>
+            ))}
+          </div>
+        }
+        jsxCode={`<Navbar size="sm" logo="DS-UI" links={links} />
+<Navbar size="md" logo="DS-UI" links={links} />
+<Navbar size="lg" logo="DS-UI" links={links} />`}
+        htmlCode={`<!-- Small Navbar (h-12) -->
+<nav class="w-full bg-[#111111] border-b border-white/10">
+  <div class="max-w-6xl mx-auto px-3"><div class="flex items-center justify-between h-12">...</div></div>
+</nav>
+
+<!-- Medium Navbar (h-16) -->
+<nav class="w-full bg-[#111111] border-b border-white/10">
+  <div class="max-w-6xl mx-auto px-4"><div class="flex items-center justify-between h-16">...</div></div>
+</nav>
+
+<!-- Large Navbar (h-20) -->
+<nav class="w-full bg-[#111111] border-b border-white/10">
+  <div class="max-w-6xl mx-auto px-6"><div class="flex items-center justify-between h-20">...</div></div>
+</nav>`}
       />
 
       {/* Variants */}
@@ -240,6 +284,7 @@ export default function NavbarPage() {
       <PropsTable props={[
         { name: 'logo',    type: 'string',                                         default: "'DS-UI'",    description: 'Brand name shown in navbar' },
         { name: 'variant', type: "'default'|'transparent'|'blur'|'solid'",         default: "'default'",  description: 'Visual style of the navbar' },
+        { name: 'size',    type: "'sm'|'md'|'lg'",                                 default: "'md'",       description: 'Size of the navbar' },
         { name: 'links',   type: "{ label: string, href: string, active?: boolean }[]", default: '[]',    description: 'Navigation links array' },
         { name: 'actions', type: 'ReactNode',                                       default: '—',         description: 'Right side buttons/content' },
         { name: 'sticky',  type: 'boolean',                                         default: 'false',     description: 'Sticks to top on scroll' },

@@ -4,6 +4,7 @@ export function Navbar({
   logo = 'DS-UI',
   links = [],
   variant = 'default',
+  size = 'md',
   sticky = false,
   actions,
 }) {
@@ -16,19 +17,37 @@ export function Navbar({
     solid:       'bg-blue-600 border-b border-blue-500',
   }
 
+  const sizes = {
+    sm: 'h-12 px-3 text-sm',
+    md: 'h-16 px-4 text-base',
+    lg: 'h-20 px-6 text-lg',
+  }
+
+  const logoSizes = {
+    sm: 'w-6 h-6',
+    md: 'w-8 h-8',
+    lg: 'w-10 h-10',
+  }
+
+  const linkSizes = {
+    sm: 'px-3 py-1.5 text-xs',
+    md: 'px-4 py-2 text-sm',
+    lg: 'px-5 py-2.5 text-base',
+  }
+
   return (
     <nav className={`w-full ${variants[variant]} ${sticky ? 'sticky top-0 z-50' : ''}`}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-6xl mx-auto">
+        <div className={`flex items-center justify-between ${sizes[size]}`}>
 
           {/* Logo */}
           <div className="flex items-center gap-2 flex-shrink-0 mr-6">
             <img
               src="https://i.ibb.co/ymRVPhRz/logo.jpg"
               alt="DS Logo"
-              className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+              className={`${logoSizes[size]} rounded-full object-cover flex-shrink-0`}
             />
-            <span className="text-white font-bold text-lg whitespace-nowrap">{logo}</span>
+            <span className="text-white font-bold whitespace-nowrap">{logo}</span>
           </div>
 
           {/* Desktop Links */}
@@ -39,7 +58,7 @@ export function Navbar({
                   key={i}
                   href={link.href || '#'}
                   className={`
-                    px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150
+                    ${linkSizes[size]} rounded-lg font-medium transition-all duration-150
                     ${link.active
                       ? 'text-white bg-white/10'
                       : 'text-white/60 hover:text-white hover:bg-white/5'
@@ -85,7 +104,7 @@ export function Navbar({
                 key={i}
                 href={link.href || '#'}
                 className={`
-                  block px-4 py-2.5 rounded-lg text-sm font-medium transition-all
+                  block ${linkSizes[size]} rounded-lg font-medium transition-all
                   ${link.active
                     ? 'text-white bg-white/10'
                     : 'text-white/60 hover:text-white hover:bg-white/5'
