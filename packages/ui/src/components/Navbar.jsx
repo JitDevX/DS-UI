@@ -23,9 +23,11 @@ export function Navbar({
 
           {/* Logo */}
           <div className="flex items-center gap-2 flex-shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-              <span className="text-white font-black text-sm">DS</span>
-            </div>
+            <img
+              src="https://i.ibb.co/ymRVPhRz/logo.jpg"
+              alt="DS Logo"
+              className="w-8 h-8 rounded-full object-cover"
+            />
             <span className="text-white font-bold text-lg">{logo}</span>
           </div>
 
