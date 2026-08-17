@@ -29,5 +29,9 @@
   "bugs": {
     "url": "https://github.com/Jitendrayadav45/DS-UI/issues"
   },
-  "homepage": "https://ds-ui.vercel.app"
+  "homepage": "https://ds-ui.vercel.app",
+  "dependencies": {
+    "framer-motion": "^13.1.0",
+    "react-icons": "^5.7.0"
+  }
 }
