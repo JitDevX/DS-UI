@@ -14,6 +14,7 @@ const navItems = [
       { id: 'alert',  label: 'Alert',  icon: '🔔' },
       { id: 'input', label: 'Input', icon: '✏️' },
       { id: 'navbar', label: 'Navbar', icon: '🧭' },
+      { id: 'sidebar', label: 'Sidebar', icon: '|||' },
     ]
   }
 ]
