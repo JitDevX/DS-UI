@@ -7,9 +7,9 @@ import { LuCalendar, LuLayers, LuCoffee } from 'react-icons/lu'
 
 // Sample data exactly from your App
 const sampleItems = [
-  { id: 'daily', label: 'Daily Planner', icon: LuCalendar },
-  { id: 'combined', label: 'Combined View', icon: LuLayers },
-  { id: 'meeting', label: 'Morning Meeting', icon: LuCoffee },
+  { id: 'dashboard', label: 'Dashboard', icon: LuCalendar },
+  { id: 'document', label: 'Documents', icon: LuLayers },
+  { id: 'training', label: 'Training', icon: LuCoffee },
 ]
 
 // Playground config
@@ -22,7 +22,7 @@ const sidebarControls = [
   {
     name: 'subText',
     type: 'text',
-    default: 'RIGMIND',
+    default: 'Contractor Name',
   },
   {
     name: 'theme',
@@ -35,8 +35,8 @@ const sidebarControls = [
 const generateSidebarCode = (values) => {
   const props = []
   if (values.logoText !== 'SAFEPAD') props.push(`logoText="${values.logoText}"`)
-  if (values.subText !== 'RIGMIND')  props.push(`subText="${values.subText}"`)
-  if (values.theme !== 'dark')       props.push(`theme="${values.theme}"`)
+  if (values.subText !== 'RIGMIND') props.push(`subText="${values.subText}"`)
+  if (values.theme !== 'dark') props.push(`theme="${values.theme}"`)
 
   const itemsCode = `items={[
     { id: 'daily', label: 'Daily Planner', icon: LuCalendar },
@@ -56,7 +56,7 @@ const generateSidebarCode = (values) => {
 export default function SidebarPage() {
   const [playgroundTheme, setPlaygroundTheme] = useState('dark')
   const [playgroundActiveTab, setPlaygroundActiveTab] = useState('daily')
-  
+
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
 
@@ -77,8 +77,8 @@ export default function SidebarPage() {
         controls={sidebarControls}
         renderPreview={(values) => {
           // Sync internal state with playground controls
-          const currentTheme = values.theme; 
-          
+          const currentTheme = values.theme;
+
           return (
             <div className={`flex w-full h-[600px] rounded-xl overflow-hidden border border-white/10 relative transition-colors duration-300 ${currentTheme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#F7F8FA]'}`}>
               {/* Component Output */}
@@ -93,18 +93,18 @@ export default function SidebarPage() {
                 onSettings={() => alert('Settings clicked!')}
                 onLogout={() => alert('Logout clicked!')}
               />
-              
+
               {/* Fake Content Area */}
               <div className="flex-1 flex flex-col items-center justify-center relative">
-                 {currentTheme === 'dark' && (
-                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-600/10 rounded-full blur-[80px] pointer-events-none" />
-                 )}
-                 <h2 className={`text-4xl font-black mb-2 opacity-20 uppercase tracking-widest ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>
-                   {playgroundActiveTab}
-                 </h2>
-                 <p className={`text-sm opacity-50 ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>
-                   Main Content Area Simulator
-                 </p>
+                {currentTheme === 'dark' && (
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-600/10 rounded-full blur-[80px] pointer-events-none" />
+                )}
+                <h2 className={`text-4xl font-black mb-2 opacity-20 uppercase tracking-widest ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>
+                  {playgroundActiveTab}
+                </h2>
+                <p className={`text-sm opacity-50 ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>
+                  Main Content Area Simulator
+                </p>
               </div>
             </div>
           )
@@ -119,12 +119,12 @@ export default function SidebarPage() {
         preview={
           <div className="w-full flex flex-col gap-6">
             <div className="flex w-full h-[500px] rounded-xl overflow-hidden border border-white/10 bg-black">
-              <Sidebar theme="dark" items={sampleItems} activeId="daily" onSettings={()=>{}} onLogout={()=>{}} />
+              <Sidebar theme="dark" items={sampleItems} activeId="daily" onSettings={() => { }} onLogout={() => { }} />
               <div className="flex-1" />
             </div>
-            
+
             <div className="flex w-full h-[500px] rounded-xl overflow-hidden border border-white/10 bg-[#F7F8FA]">
-              <Sidebar theme="light" items={sampleItems} activeId="combined" onSettings={()=>{}} onLogout={()=>{}} />
+              <Sidebar theme="light" items={sampleItems} activeId="combined" onSettings={() => { }} onLogout={() => { }} />
               <div className="flex-1" />
             </div>
           </div>
@@ -135,16 +135,16 @@ export default function SidebarPage() {
 
       {/* Props Table */}
       <PropsTable props={[
-        { name: 'logoText',      type: 'string',                                         default: "'SAFEPAD'",   description: 'Main brand name' },
-        { name: 'subText',       type: 'string',                                         default: "'RIGMIND'",   description: 'Sub-brand tracking text' },
-        { name: 'logoImage',     type: 'string',                                         default: 'URL',         description: 'Source for the logo image' },
-        { name: 'items',         type: "{ id: string, label: string, icon: ReactNode }[]", default: '[]',        description: 'Navigation items array' },
-        { name: 'activeId',      type: 'string',                                         default: 'undefined',   description: 'Currently active tab ID' },
-        { name: 'onNavigate',    type: '(id: string) => void',                           default: 'undefined',   description: 'Navigation click handler' },
-        { name: 'theme',         type: "'dark'|'light'",                                 default: "'dark'",      description: 'Component theme' },
-        { name: 'onToggleTheme', type: '() => void',                                     default: 'undefined',   description: 'Toggle theme action (shows button)' },
-        { name: 'onSettings',    type: '() => void',                                     default: 'undefined',   description: 'Settings action (shows button)' },
-        { name: 'onLogout',      type: '() => void',                                     default: 'undefined',   description: 'Logout action (shows button)' },
+        { name: 'logoText', type: 'string', default: "'SAFEPAD'", description: 'Main brand name' },
+        { name: 'subText', type: 'string', default: "'RIGMIND'", description: 'Sub-brand tracking text' },
+        { name: 'logoImage', type: 'string', default: 'URL', description: 'Source for the logo image' },
+        { name: 'items', type: "{ id: string, label: string, icon: ReactNode }[]", default: '[]', description: 'Navigation items array' },
+        { name: 'activeId', type: 'string', default: 'undefined', description: 'Currently active tab ID' },
+        { name: 'onNavigate', type: '(id: string) => void', default: 'undefined', description: 'Navigation click handler' },
+        { name: 'theme', type: "'dark'|'light'", default: "'dark'", description: 'Component theme' },
+        { name: 'onToggleTheme', type: '() => void', default: 'undefined', description: 'Toggle theme action (shows button)' },
+        { name: 'onSettings', type: '() => void', default: 'undefined', description: 'Settings action (shows button)' },
+        { name: 'onLogout', type: '() => void', default: 'undefined', description: 'Logout action (shows button)' },
       ]} />
 
     </div>
