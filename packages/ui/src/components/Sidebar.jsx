@@ -1,221 +1,325 @@
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  LuSettings,
-  LuMoon,
-  LuSun,
-  LuLogOut,
-  LuLayers,
-} from "react-icons/lu";
+import { FiSun, FiMoon, FiSettings } from "react-icons/fi";
+import { LuLogOut, LuLayers } from "react-icons/lu";
 
 export function Sidebar({
-  logoText = "SAFEPAD",
-  subText = "RIGMIND",
-  logoImage = "https://i.ibb.co/ymRVPhRz/logo.jpg",
+  // Navigation Items (supports `items` or `navItems`)
   items = [],
+  navItems,
+  // Active route/id (supports `activeId` or `router.pathname`)
   activeId,
+  router,
+  // Navigation handler
   onNavigate,
+  // Theme handling (supports `onToggleTheme` or `toggleTheme`)
   theme = "dark",
   onToggleTheme,
+  toggleTheme,
+  // Action handlers
   onSettings,
   onLogout,
+  // Branding (supports `logoImage`/`logoText`/`subText` or `logoSrc`/`brandName`/`brandTagline`)
+  logoImage,
+  logoSrc = "https://i.ibb.co/ymRVPhRz/logo.jpg",
+  logoAlt = "Logo",
+  logoText,
+  brandName = "SAFEPAD",
+  subText,
+  Contractor = "Contractor Name",
 }) {
   const isDark = theme === "dark";
+  const itemList = items.length > 0 ? items : navItems || [];
+  const currentActive = activeId !== undefined ? activeId : router?.pathname;
+  const handleToggleTheme = onToggleTheme || toggleTheme;
+  const logo = logoImage || logoSrc;
+  const title = logoText || brandName;
+  const tagline = subText || Contractor;
 
   return (
     <aside
-      className={`w-[270px] h-full shrink-0 flex flex-col border-r transition-colors duration-200 z-10 ${
-        isDark
-          ? "bg-black border-white/10 text-white"
-          : "bg-white border-[#E5E7EB] text-[#101828]"
-      }`}
+      className={`
+        flex h-full w-[275px] shrink-0 flex-col border-r
+        transition-colors duration-200 z-10
+        ${isDark ? "border-white/10 bg-black text-white" : "border-black/10 bg-white text-black"}
+      `}
     >
-      {/* ── Logo Header ── */}
-      <div
-        className={`relative shrink-0 flex items-center gap-3 px-5 py-5 border-b ${
-          isDark ? "border-white/10" : "border-[#E5E7EB]"
-        }`}
-      >
-        {/* Glow line at bottom */}
-        {isDark && (
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-purple-500/60 to-transparent" />
-        )}
+      {/* Header */}
+      <div className="relative mb-4 flex h-16 shrink-0 items-center justify-between px-6">
+        <div className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-purple-500/0 via-purple-700/50 to-purple-500/0" />
 
-        {logoImage && (
-          <img src={logoImage} alt="Logo" className="w-11 h-11 shrink-0 rounded-full object-cover" />
-        )}
+        <div className="flex min-w-0 items-center gap-3.5">
+          {logo && (
+            <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden">
+              <img
+                src={logo}
+                alt={logoAlt}
+                className="relative h-11 w-11 rounded-full object-cover"
+              />
+            </div>
+          )}
 
-        <div className="flex flex-col leading-none">
-          <span
-            className={`text-[17px] font-bold tracking-[0.2em] ${
-              isDark ? "text-white" : "text-black"
-            }`}
-          >
-            {logoText}
-          </span>
-          <span
-            className={`mt-1.5 text-[10px] font-semibold tracking-[0.18em] uppercase ${
-              isDark ? "text-purple-300/90" : "text-purple-500/90"
-            }`}
-          >
-            {subText}
-          </span>
+          <div className="min-w-0 leading-none">
+            <h1 className="break-words text-[17px] font-bold uppercase tracking-[0.15em]">
+              {title}
+            </h1>
+
+            <p
+              className={`mt-1.5 break-words text-[9px] font-semibold uppercase tracking-[0.16em] ${isDark ? "text-purple-400" : "text-purple-600"
+                }`}
+            >
+              {tagline}
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* ── Navigation (scrollable) ── */}
-      <nav className="flex-1 overflow-y-auto px-3 py-3 space-y-0.5">
-        {items.map((item) => {
-          const isActive = activeId === item.id;
+      {/* Navigation */}
+      <nav className="relative flex-1 space-y-1 overflow-y-auto px-4 pb-3">
+        {itemList.map((item) => {
+          const itemId = item.id || item.route;
+          const isActive = currentActive === itemId;
           const Icon = item.icon || LuLayers;
 
           return (
             <button
-              key={item.id}
-              onClick={() => onNavigate && onNavigate(item.id)}
-              className={`w-full group relative flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-all duration-150 ${
-                isActive
+              type="button"
+              key={itemId}
+              onClick={() => onNavigate && onNavigate(itemId)}
+              className={`
+                group relative flex w-full cursor-pointer items-center gap-3
+                overflow-hidden rounded-2xl px-3 py-1.5 text-left
+                outline-none transition xl:py-2
+                focus-visible:ring-2 focus-visible:ring-purple-500
+                ${isActive
                   ? isDark
-                    ? "bg-purple-500/10 border border-purple-500/25"
-                    : "bg-purple-500/[0.07] border border-purple-500/20 shadow-sm"
+                    ? "text-white"
+                    : "text-black"
                   : isDark
-                  ? "hover:bg-white/[0.07]"
-                  : "hover:bg-[#F4F6F8] border border-transparent"
-              }`}
+                    ? "text-white/60 hover:bg-white/[0.04] hover:text-white"
+                    : "text-black/70 hover:bg-black/[0.03] hover:text-black"
+                }
+              `}
             >
-              {/* Active left bar */}
+              {/* Active background */}
               {isActive && (
-                <motion.span
-                  layoutId="sidebar-active-bar"
-                  className="absolute left-0 top-2.5 bottom-2.5 w-[3px] rounded-full bg-purple-500"
+                <motion.div
+                  layoutId="active-module"
+                  className={`absolute inset-0 rounded-2xl border ${isDark
+                      ? "border-purple-500/25 bg-purple-500/10"
+                      : "border-purple-500/20 bg-purple-500/[0.07]"
+                    }`}
+                  transition={{
+                    type: "spring",
+                    stiffness: 380,
+                    damping: 30,
+                  }}
                 />
               )}
 
-              {/* Icon box */}
+              {/* Active line */}
+              {isActive && (
+                <motion.span
+                  layoutId="active-line"
+                  className="absolute bottom-3 left-0 top-3 w-[3px] rounded-full bg-purple-500"
+                  transition={{
+                    type: "spring",
+                    stiffness: 380,
+                    damping: 30,
+                  }}
+                />
+              )}
+
+              {/* Icon */}
               <span
-                className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-xl transition-colors duration-150 ${
-                  isActive
+                className={`
+                  relative z-10 flex h-10 w-10 shrink-0
+                  items-center justify-center rounded-[14px]
+                  transition
+                  ${isActive
                     ? "bg-purple-600 text-white shadow-[0_8px_24px_rgba(147,51,234,0.25)]"
                     : isDark
-                    ? "bg-white/[0.06] text-white/55 group-hover:bg-white/10 group-hover:text-white"
-                    : "bg-[#F4F6F8] text-[#667085] group-hover:bg-[#E9ECF0] group-hover:text-[#101828]"
-                }`}
+                      ? "bg-white/[0.06] text-white/55 group-hover:bg-white/10 group-hover:text-white"
+                      : "bg-black/[0.04] text-black/55 group-hover:bg-black/[0.07] group-hover:text-black"
+                  }
+                `}
               >
-                <Icon className="w-[18px] h-[18px]" />
+                <Icon className="text-[18px]" />
               </span>
 
-              {/* Label */}
-              <span
-                className={`text-[14px] leading-snug font-semibold ${
-                  isActive
-                    ? isDark
-                      ? "text-[#EDF1F7]"
-                      : "text-[#101828]"
-                    : isDark
-                    ? "text-white/80 group-hover:text-white"
-                    : "text-[#667085] group-hover:text-[#101828]"
-                }`}
-              >
-                {item.label}
+              {/* Text */}
+              <span className="relative z-10 min-w-0 flex-1">
+                <span className="block whitespace-normal break-words text-[13px] font-semibold leading-tight">
+                  {item.label}
+                </span>
               </span>
             </button>
           );
         })}
       </nav>
 
-      {/* ── Footer ── */}
+      {/* Bottom Controls */}
       <div
-        className={`shrink-0 flex items-center justify-center gap-4 px-3 py-4 border-t ${
-          isDark ? "border-[#262F3F]" : "border-[#E5E7EB]"
-        }`}
+        className={`border-t p-4 ${isDark ? "border-white/10" : "border-black/10"
+          }`}
       >
-        {/* Theme toggle pill */}
-        {onToggleTheme && (
-          <button
-            type="button"
-            onClick={onToggleTheme}
-            title={`Switch to ${isDark ? "Light" : "Dark"} mode`}
-            className={`group flex shrink-0 cursor-pointer items-center rounded-2xl p-1.5 transition-all duration-300 ease-in-out ${
-              isDark
-                ? "bg-white text-black hover:bg-white/90 shadow-sm"
-                : "bg-[#101828] text-white hover:bg-[#101828]/85 shadow-sm"
-            }`}
-          >
-            <span
-              className={`flex h-8 w-8 items-center justify-center rounded-xl transition-colors ${
-                isDark ? "bg-black/[0.06] text-purple-600" : "bg-white/[0.12] text-purple-500"
-              }`}
+        <div className="flex w-full items-center justify-between gap-2">
+          {/* Theme */}
+          {handleToggleTheme && (
+            <button
+              type="button"
+              onClick={handleToggleTheme}
+              aria-label={
+                isDark ? "Switch to Light mode" : "Switch to dark mode"
+              }
+              className={`
+                group flex cursor-pointer items-center rounded-2xl p-1.5
+                transition-all duration-300 ease-in-out
+                ${isDark
+                  ? "bg-white text-black hover:bg-white/90"
+                  : "bg-black text-white hover:bg-black/85"
+                }
+              `}
             >
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span
-                  key={theme}
-                  initial={{ opacity: 0, rotate: -45, scale: 0.6 }}
-                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                  exit={{ opacity: 0, rotate: 45, scale: 0.6 }}
-                  transition={{ duration: 0.16 }}
-                  className="flex items-center justify-center"
-                >
-                  {isDark ? (
-                    <LuSun className="w-[17px] h-[17px]" />
-                  ) : (
-                    <LuMoon className="w-[17px] h-[17px]" />
-                  )}
-                </motion.span>
-              </AnimatePresence>
-            </span>
-            <span className="max-w-0 overflow-hidden whitespace-nowrap text-[12px] font-semibold opacity-0 transition-all duration-300 ease-in-out group-hover:ml-1.5 group-hover:max-w-[56px] group-hover:pr-2 group-hover:opacity-100">
-              {isDark ? "Light" : "Dark"}
-            </span>
-          </button>
-        )}
+              <span
+                className={`
+                  flex h-9 w-9 shrink-0 items-center justify-center
+                  rounded-xl transition-colors
+                  ${isDark
+                    ? "bg-black/[0.06] text-purple-600"
+                    : "bg-white/[0.12] text-purple-400"
+                  }
+                `}
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={theme}
+                    initial={{
+                      opacity: 0,
+                      rotate: -45,
+                      scale: 0.7,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      rotate: 0,
+                      scale: 1,
+                    }}
+                    exit={{
+                      opacity: 0,
+                      rotate: 45,
+                      scale: 0.7,
+                    }}
+                    transition={{ duration: 0.18 }}
+                  >
+                    {isDark ? <FiSun /> : <FiMoon />}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
 
-        {/* Settings pill (Middle) */}
-        {onSettings && (
-          <button
-            onClick={onSettings}
-            title="Settings"
-            className={`group flex shrink-0 cursor-pointer items-center rounded-2xl p-1.5 transition-all duration-300 ease-in-out ${
-              isDark
-                ? "bg-[#1B2431] text-[#9CA7BC] hover:bg-[#222C3C] hover:text-[#EDF1F7]"
-                : "bg-[#F4F6F8] text-[#667085] hover:bg-[#E9ECF0] hover:text-[#101828]"
-            }`}
-          >
-            <span
-              className={`flex h-8 w-8 items-center justify-center rounded-xl transition-colors duration-150 ${
-                isDark ? "bg-black/20" : "bg-white shadow-sm"
-              }`}
-            >
-              <LuSettings className="w-[17px] h-[17px]" />
-            </span>
-            <span className="max-w-0 overflow-hidden whitespace-nowrap text-[12px] font-semibold opacity-0 transition-all duration-300 ease-in-out group-hover:ml-1.5 group-hover:max-w-[65px] group-hover:pr-2 group-hover:opacity-100">
-              Settings
-            </span>
-          </button>
-        )}
+              <span
+                className="
+                  max-w-0 overflow-hidden whitespace-nowrap
+                  text-[13px] font-semibold opacity-0
+                  transition-all duration-300 ease-in-out
+                  group-hover:ml-2
+                  group-hover:max-w-24
+                  group-hover:pr-2
+                  group-hover:opacity-100
+                "
+              >
+                {isDark ? "Light" : "Dark"}
+              </span>
+            </button>
+          )}
 
-        {/* Sign out pill (Right) */}
-        {onLogout && (
-          <button
-            onClick={onLogout}
-            title="Sign out"
-            className={`group flex shrink-0 cursor-pointer items-center rounded-2xl p-1.5 transition-all duration-300 ease-in-out ${
-              isDark
-                ? "bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white"
-                : "bg-red-50 text-red-700 hover:bg-red-600 hover:text-white shadow-sm"
-            }`}
-          >
-            <span
-              className={`flex h-8 w-8 items-center justify-center rounded-xl transition-colors ${
-                isDark ? "bg-red-500/20 group-hover:bg-black/20" : "bg-white group-hover:bg-white/20 shadow-sm group-hover:shadow-none"
-              }`}
+          {/* Settings */}
+          {onSettings && (
+            <button
+              type="button"
+              onClick={onSettings}
+              aria-label="Settings"
+              className={`
+                group flex cursor-pointer items-center rounded-2xl p-1.5
+                transition-all duration-300 ease-in-out
+                ${isDark
+                  ? "bg-white/[0.06] text-white hover:bg-white/10"
+                  : "bg-black/[0.04] text-black hover:bg-black/[0.07]"
+                }
+              `}
             >
-              <LuLogOut className="w-[17px] h-[17px]" />
-            </span>
-            <span className="max-w-0 overflow-hidden whitespace-nowrap text-[12px] font-semibold opacity-0 transition-all duration-300 ease-in-out group-hover:ml-1.5 group-hover:max-w-[65px] group-hover:pr-2 group-hover:opacity-100">
-              Sign out
-            </span>
-          </button>
-        )}
+              <span
+                className={`
+                  flex h-9 w-9 shrink-0 items-center justify-center
+                  rounded-xl transition-colors
+                  ${isDark
+                    ? "bg-white/[0.06] text-white/80 group-hover:bg-white/10 group-hover:text-white"
+                    : "bg-black/[0.04] text-black/80 group-hover:bg-black/[0.07] group-hover:text-black"
+                  }
+                `}
+              >
+                <FiSettings size={16} />
+              </span>
+
+              <span
+                className="
+                  max-w-0 overflow-hidden whitespace-nowrap
+                  text-[13px] font-semibold opacity-0
+                  transition-all duration-300 ease-in-out
+                  group-hover:ml-2
+                  group-hover:max-w-24
+                  group-hover:pr-2
+                  group-hover:opacity-100
+                "
+              >
+                Settings
+              </span>
+            </button>
+          )}
+
+          {/* Logout */}
+          {onLogout && (
+            <button
+              type="button"
+              onClick={onLogout}
+              aria-label="Logout"
+              className="
+                group flex cursor-pointer items-center rounded-2xl
+                bg-red-500/[0.08] p-1.5 text-red-600
+                transition-all duration-300 ease-in-out
+                hover:bg-red-600 hover:text-white
+                dark:text-red-500
+              "
+            >
+              <span
+                className="
+                  flex h-9 w-9 shrink-0 items-center justify-center
+                  rounded-xl bg-red-500/10 text-red-600
+                  transition-colors
+                  group-hover:bg-white/15 group-hover:text-white
+                  dark:text-red-500
+                "
+              >
+                <LuLogOut />
+              </span>
+
+              <span
+                className="
+                  max-w-0 overflow-hidden whitespace-nowrap
+                  text-[13px] font-semibold opacity-0
+                  transition-all duration-300 ease-in-out
+                  group-hover:ml-2
+                  group-hover:max-w-24
+                  group-hover:pr-2
+                  group-hover:opacity-100
+                "
+              >
+                Logout
+              </span>
+            </button>
+          )}
+        </div>
       </div>
     </aside>
   );
 }
+
+export default Sidebar;
